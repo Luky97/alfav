@@ -10,6 +10,8 @@ import { TradeControls } from './trade-controls';
 import { TradeTypeChips } from '@/components/custom/trade-type-chips';
 import { SymbolSelector } from '@/components/custom/symbol-selector';
 import { ThemeToggle } from '@/components/custom/theme-toggle';
+import { DCirclesDashboard } from './d-circles-dashboard';
+import type { UseDCirclesAutoTradingReturn } from '@/hooks/use-d-circles-auto-trading';
 import type {
   AuthState,
   DerivAccount,
@@ -70,6 +72,7 @@ export interface DigitsViewProps {
   buyResult: BuyResult | null;
   buyError: string | null;
   clearBuyResult: () => void;
+  dCircles: UseDCirclesAutoTradingReturn;
   // Branding (used by preview route; no-op in the real app)
   logoSrc?: string;
   appName?: string;
@@ -111,6 +114,7 @@ export function DigitsView({
   buyResult,
   buyError,
   clearBuyResult,
+  dCircles,
   logoSrc,
   appName,
 }: DigitsViewProps) {
@@ -161,6 +165,8 @@ export function DigitsView({
           </>
         ) : (
           <>
+            <DCirclesDashboard isConnected={isConnected} symbols={symbols} auto={dCircles} />
+
             <div className="shrink-0 overflow-x-auto pb-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <TradeTypeChips
                 value={tradeType}
