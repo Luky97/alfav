@@ -15,6 +15,7 @@ import type {
 } from '@deriv/core';
 import { useBaseTrading } from '@/hooks/use-base-trading';
 import type { UseBaseTradingParams } from '@/hooks/use-base-trading';
+import { useDCirclesAutoTrading, type UseDCirclesAutoTradingReturn } from '@/hooks/use-d-circles-auto-trading';
 import { computeDigitStats, getLastDigit } from '../lib/digit-stats';
 import type { ContractMode, TradeType, DigitStats, OpenPosition, ClosedPosition } from '../lib/types';
 
@@ -57,6 +58,7 @@ interface UseDigitsTradingReturn {
   sellingId: number | null;
   sellError: string | null;
   clearSellError: () => void;
+  dCircles: UseDCirclesAutoTradingReturn;
 }
 
 export type UseDigitsTradingParams = Pick<UseBaseTradingParams, 'ws' | 'isConnected' | 'isExhausted' | 'isAuthenticated' | 'onAuthWSFailed'>;
@@ -90,6 +92,7 @@ export function useDigitsTrading({ ws, isConnected, isExhausted, isAuthenticated
   const [selectedDigit, setSelectedDigit] = useState<number>(5);
   const [stake, setStake] = useState<string>('10');
   const [duration, setDuration] = useState<number>(5);
+  const dCircles = useDCirclesAutoTrading(tradingWs, tradingIsConnected, symbols, isAuthenticated);
 
   // Reset contract mode to the first option of the selected trade type
   const setTradeType = useCallback((type: TradeType) => {
@@ -197,5 +200,6 @@ export function useDigitsTrading({ ws, isConnected, isExhausted, isAuthenticated
     sellingId,
     sellError,
     clearSellError,
+    dCircles,
   };
 }
